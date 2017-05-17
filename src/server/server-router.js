@@ -153,11 +153,11 @@ type PathRegExp = {|
  * can be used with Meteor [webapp](https://docs.meteor.com/packages/webapp.html) package.
  *
  * @param options
- * @param {Array<Path>} options.paths Initial paths. You can add more with
+ * @param {Array<Path>?} [options.paths=[]] Initial paths. You can add more with
  * {@link #ServerRouter#addPaths} or {@link #ServerRouter#addPath}.
- * @param {Routes} options.routes Initial routes. You can add more with
+ * @param {Routes?} [options.routes={}] Initial routes. You can add more with
  * {@link #ServerRouter#addRoutes}.
- * @param {string} [options.defaultRoutePath=/r/:name/:args*] Any added {@link Route} can be
+ * @param {string?} [options.defaultRoutePath=/r/:name/:args*] Any added {@link Route} can be
  * reached by this path when provided its nested name and arguments. See {@link Path} for more on
  * syntax. Should be unique for every ServerRouter instance (if you need more than one).
  * Arguments are serialized with [EJSON](https://docs.meteor.com/api/ejson.html) for transportation.
@@ -183,15 +183,21 @@ export class ServerRouter {
   /**
    * Short for `(new ServerRouter(options)).middleware`.
    */
-  static middleware(options: *) {
+  static middleware(options?: *) {
     return (new this(options)).middleware;
   }
 
-  constructor(options: {|
-    routes: Routes,
+  constructor(options?: {|
+    routes?: Routes,
     defaultRoutePath?: string,
-    paths: Array<Path>,
+    paths?: Array<Path>,
   |}) {
+    const { routes, defaultRoutePath, paths } = Object.assign({
+      routes: ({}: any),
+      defaultRoutePath: '/r/:name/:args*',
+      paths: [],
+    }, options);
+
     this._routes = {};
     this._paths = [];
 
@@ -243,9 +249,9 @@ export class ServerRouter {
       },
     });
 
-    const routes = this._routes;
+    const allRoutes = this._routes;
     this.addPath({
-      path: options.defaultRoutePath || '/r/:name/:args*',
+      path: defaultRoutePath,
       args: (params) => {
         const { name, args } = params;
         invariant(typeof name === 'string', 'name is string');
@@ -260,7 +266,7 @@ export class ServerRouter {
         return [name, ...parsedArgs];
       },
       async route(name: string, ...rest) {
-        const route: ?Route = getFieldValue(routes, name);
+        const route: ?Route = getFieldValue(allRoutes, name);
         if (!route) {
           return undefined;
         }
@@ -269,8 +275,8 @@ export class ServerRouter {
       },
     });
 
-    this.addPaths(options.paths);
-    this.addRoutes(options.routes);
+    this.addPaths(paths);
+    this.addRoutes(routes);
 
     this.middleware = this._middleware.bind(this);
   }

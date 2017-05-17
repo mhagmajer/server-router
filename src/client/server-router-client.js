@@ -13,7 +13,7 @@ type Routes = { [name: string]: any | Routes }
  * Client for ServerRouter
  *
  * @param options
- * @param {Routes} options.routes Known server-side routes. When providing this object you can
+ * @param {Routes} [options.routes={}] Known server-side routes. When providing this object you can
  * substitute function with anything other than object. For example:
  * ```javascript
  * const x: any = 1;
@@ -28,12 +28,16 @@ type Routes = { [name: string]: any | Routes }
  * @param {string} [options.defaultRoutePath=/r/:name/:args*] Same as in {@link ServerRouter}.
  */
 export class ServerRouterClient<R: Routes> {
-  constructor(options: {|
-    routes: R,
+  constructor(options?: {|
+    routes?: R,
     defaultRoutePath?: string,
   |}) {
-    this._routes = options.routes;
-    this._defaultRoutePath = pathToRegexp.compile(options.defaultRoutePath || '/r/:name/:args*');
+    const { routes, defaultRoutePath } = Object.assign({
+      routes: ({}: any),
+      defaultRoutePath: '/r/:name/:args*',
+    }, options);
+    this._routes = routes;
+    this._defaultRoutePath = pathToRegexp.compile(defaultRoutePath);
 
     this.url = this._createRouteHandlers();
     this.redirect = this._createRouteHandlers({
@@ -95,7 +99,7 @@ export class ServerRouterClient<R: Routes> {
   /**
    * Redirects to given route and args with authenication. Short for (example):
    * ```javascript
-   * serverRouter.redirectTo(serverRouter.getRouteUrl('privateImages.img1', 800, 600));
+   * serverRouterClient.redirectTo(serverRouterClient.getRouteUrl('privateImages.img1', 800, 600));
    * ```
    *
    * Returns a promise for the same reason like {@link #ServerRouterClient#redirectTo}.
@@ -107,14 +111,14 @@ export class ServerRouterClient<R: Routes> {
   /**
    * Convenient getters of urls for server routes. Compatible with static type checkers like Flow.
    * @example
-   * console.log(serverRouter.url.privateImages.img1(800, 600));
+   * console.log(serverRouterClient.url.privateImages.img1(800, 600));
    */
   url: R;
 
   /**
    * Convenient methods for redirecting to a server route with authentication.
    * @example
-   * serverRouter.redirect.privateImages.img1(800, 600);
+   * serverRouterClient.redirect.privateImages.img1(800, 600);
    */
   redirect: R;
 

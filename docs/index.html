@@ -241,6 +241,7 @@
   
     <h1>mhagmajer:server-router</h1>
 <p>Server router with authentication for Meteor</p>
+<p>Documentation: <a href="https://mhagmajer.github.io/server-router/">https://mhagmajer.github.io/server-router/</a>.</p>
 <h1>Installing</h1>
 <p><code>meteor add mhagmajer:server-router</code></p>
 
@@ -762,7 +763,7 @@ use this to write data that should be sent in response to the request.</li>
 can be used with Meteor <a href="https://docs.meteor.com/packages/webapp.html">webapp</a> package.</p>
 
 
-  <div class='pre p1 fill-light mt0'>new ServerRouter(options: {routes: <a href="#routes">Routes</a>, defaultRoutePath: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?, paths: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#path">Path</a>>})</div>
+  <div class='pre p1 fill-light mt0'>new ServerRouter(options: {routes: <a href="#routes">Routes</a>?, defaultRoutePath: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?, paths: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#path">Path</a>>?})</div>
   
   
 
@@ -779,7 +780,7 @@ can be used with Meteor <a href="https://docs.meteor.com/packages/webapp.html">w
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>options</span> <code class='quiet'>({routes: <a href="#routes">Routes</a>, defaultRoutePath: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?, paths: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#path">Path</a>>})</code>
+            <span class='code bold'>options</span> <code class='quiet'>({routes: <a href="#routes">Routes</a>?, defaultRoutePath: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?, paths: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#path">Path</a>>?})</code>
 	    
           </div>
           
@@ -797,7 +798,9 @@ can be used with Meteor <a href="https://docs.meteor.com/packages/webapp.html">w
             <tbody class='mt1'>
               
                 <tr>
-                  <td class='break-word'><span class='code bold'>options.paths</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#path">Path</a>></code>
+                  <td class='break-word'><span class='code bold'>options.paths</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#path">Path</a>>?</code>
+                  
+                    (default <code>[]</code>)
                   </td>
                   <td class='break-word'><span>Initial paths. You can add more with
 
@@ -809,7 +812,9 @@ can be used with Meteor <a href="https://docs.meteor.com/packages/webapp.html">w
                 </tr>
               
                 <tr>
-                  <td class='break-word'><span class='code bold'>options.routes</span> <code class='quiet'><a href="#routes">Routes</a></code>
+                  <td class='break-word'><span class='code bold'>options.routes</span> <code class='quiet'><a href="#routes">Routes</a>?</code>
+                  
+                    (default <code>{}</code>)
                   </td>
                   <td class='break-word'><span>Initial routes. You can add more with
 
@@ -819,7 +824,7 @@ can be used with Meteor <a href="https://docs.meteor.com/packages/webapp.html">w
                 </tr>
               
                 <tr>
-                  <td class='break-word'><span class='code bold'>options.defaultRoutePath</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>
+                  <td class='break-word'><span class='code bold'>options.defaultRoutePath</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?</code>
                   
                     (default <code>/r/:name/:args*</code>)
                   </td>
@@ -1265,7 +1270,7 @@ serverRouter.addRoutes({ ... });</pre>
   <p>Client for ServerRouter</p>
 
 
-  <div class='pre p1 fill-light mt0'>new ServerRouterClient(options: {routes: R, defaultRoutePath: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?})</div>
+  <div class='pre p1 fill-light mt0'>new ServerRouterClient(options: {routes: R?, defaultRoutePath: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?})</div>
   
   
 
@@ -1282,7 +1287,7 @@ serverRouter.addRoutes({ ... });</pre>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>options</span> <code class='quiet'>({routes: R, defaultRoutePath: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?})</code>
+            <span class='code bold'>options</span> <code class='quiet'>({routes: R?, defaultRoutePath: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?})</code>
 	    
           </div>
           
@@ -1301,6 +1306,8 @@ serverRouter.addRoutes({ ... });</pre>
               
                 <tr>
                   <td class='break-word'><span class='code bold'>options.routes</span> <code class='quiet'><a href="#routes">Routes</a></code>
+                  
+                    (default <code>{}</code>)
                   </td>
                   <td class='break-word'><span>Known server-side routes. When providing this object you can
 substitute function with anything other than object. For example:

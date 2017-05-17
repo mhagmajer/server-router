@@ -29,10 +29,10 @@ declare module 'meteor/mhagmajer:server-router' {
   };
 
   declare export class ServerRouter {
-    constructor(options: {|
-      routes: Routes,
+    constructor(options?: {|
+      routes?: Routes,
       defaultRoutePath?: string,
-      paths: Array<Path>,
+      paths?: Array<Path>,
     |}): this;
 
     addPath(data: Path): void;
@@ -45,8 +45,8 @@ declare module 'meteor/mhagmajer:server-router' {
   }
 
   declare export class ServerRouterClient<R: Routes> {
-    constructor(options: {|
-      routes: R,
+    constructor(options?: {|
+      routes?: R,
       defaultRoutePath?: string,
     |}): this;
 
