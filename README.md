@@ -7,6 +7,8 @@ Documentation: https://mhagmajer.github.io/server-router/.
 
 `meteor add mhagmajer:server-router`
 
+You can find Flow type definitions in `/definitions`.
+
 # Example
 
 ## Server-side
@@ -36,6 +38,10 @@ const serverRouterClient = new ServerRouterClient({
 });
 
 <Button onClick={() => {
-  ServerRouterClient.redirect.hello();  
+  serverRouterClient.redirect.hello();  
 }} />
 ```
+
+# Publishing (collaborators)
+
+Run `npm run clean` before `meteor publish`.

@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset='utf-8' />
-  <title>server-router 1.0.0 | Documentation</title>
+  <title>server-router 1.0.5 | Documentation</title>
   <meta name='viewport' content='width=device-width,initial-scale=1'>
   <link href='assets/bass.css' type='text/css' rel='stylesheet' />
   <link href='assets/style.css' type='text/css' rel='stylesheet' />
@@ -14,7 +14,7 @@
       <div class='fixed xs-hide fix-3 overflow-auto max-height-100'>
         <div class='py1 px2'>
           <h3 class='mb0 no-anchor'>server-router</h3>
-          <div class='mb1'><code>1.0.0</code></div>
+          <div class='mb1'><code>1.0.5</code></div>
           <input
             placeholder='Filter'
             id='filter-input'
@@ -244,6 +244,32 @@
 <p>Documentation: <a href="https://mhagmajer.github.io/server-router/">https://mhagmajer.github.io/server-router/</a>.</p>
 <h1>Installing</h1>
 <p><code>meteor add mhagmajer:server-router</code></p>
+<h1>Example</h1>
+<h2>Server-side</h2>
+<pre class='hljs'><span class="hljs-keyword">import</span> { ServerRouter } <span class="hljs-keyword">from</span> <span class="hljs-string">'meteor/mhagmajer:server-router'</span>;
+
+WebApp.connectHandlers.use(ServerRouter.middleware({
+  <span class="hljs-attr">paths</span>: [],
+  <span class="hljs-attr">routes</span>: {
+    hello() {
+      <span class="hljs-keyword">return</span> <span class="hljs-string">`You are <span class="hljs-subst">${<span class="hljs-keyword">this</span>.userId}</span>`</span>;
+    },
+  },
+}));</pre>
+<h2>Client-side</h2>
+<pre class='hljs'><span class="hljs-keyword">import</span> { ServerRouterClient } <span class="hljs-keyword">from</span> <span class="hljs-string">'meteor/mhagmajer:server-router'</span>;
+
+<span class="hljs-keyword">const</span> serverRouterClient = <span class="hljs-keyword">new</span> ServerRouterClient({
+  <span class="hljs-attr">routes</span>: {
+    <span class="hljs-attr">hello</span>: <span class="hljs-number">1</span>,
+  },
+});
+
+<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">Button</span> <span class="hljs-attr">onClick</span>=<span class="hljs-string">{()</span> =&gt;</span> {
+  serverRouterClient.redirect.hello();  
+}} /&gt;</span></pre>
+<h1>Publishing (collaborators)</h1>
+<p>Run <code>npm run clean</code> before <code>meteor publish</code>.</p>
 
   
 </section>
@@ -1507,7 +1533,7 @@ route, you can just do:</p>
   
 
   <p>Redirects to given route and args with authenication. Short for (example):</p>
-<pre class='hljs'>serverRouter.redirectTo(serverRouter.getRouteUrl(<span class="hljs-string">'privateImages.img1'</span>, <span class="hljs-number">800</span>, <span class="hljs-number">600</span>));</pre>
+<pre class='hljs'>serverRouterClient.redirectTo(serverRouterClient.getRouteUrl(<span class="hljs-string">'privateImages.img1'</span>, <span class="hljs-number">800</span>, <span class="hljs-number">600</span>));</pre>
 <p>Returns a promise for the same reason like <a href="#ServerRouterClient#redirectTo">#ServerRouterClient#redirectTo</a>.</p>
 
 
@@ -1606,7 +1632,7 @@ route, you can just do:</p>
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
-      <pre class='p1 overflow-auto round fill-light'><span class="hljs-built_in">console</span>.log(serverRouter.url.privateImages.img1(<span class="hljs-number">800</span>, <span class="hljs-number">600</span>));</pre>
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-built_in">console</span>.log(serverRouterClient.url.privateImages.img1(<span class="hljs-number">800</span>, <span class="hljs-number">600</span>));</pre>
     
   
 
@@ -1663,7 +1689,7 @@ route, you can just do:</p>
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
-      <pre class='p1 overflow-auto round fill-light'>serverRouter.redirect.privateImages.img1(<span class="hljs-number">800</span>, <span class="hljs-number">600</span>);</pre>
+      <pre class='p1 overflow-auto round fill-light'>serverRouterClient.redirect.privateImages.img1(<span class="hljs-number">800</span>, <span class="hljs-number">600</span>);</pre>
     
   
 
