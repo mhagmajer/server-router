@@ -50,11 +50,12 @@ declare module 'meteor/mhagmajer:server-router' {
       defaultRoutePath?: string,
     |}): this;
 
-    redirectTo(href: string): Promise<void>;
-    getRouteUrl(name: string, ...args: Array<any>): string;
-    redirectToRoute(name: string, ...args: Array<any>): Promise<void>;
-
-    url: R;
     redirect: R;
+    path: R;
+
+    redirectTo(path: string): Promise<void>;
+    redirectToRoute(name: string, ...args: Array<any>): Promise<void>;
+    authenticatePath(path: string): Promise<string>;
+    getRoutePath(name: string, ...args: Array<any>): string;
   }
 }
