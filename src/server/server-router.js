@@ -208,7 +208,7 @@ export class ServerRouter {
         const { _u: userId, _t: token } = query;
 
         if (!userId) {
-          return;
+          return false; // continue request processing
         }
 
         const matchedUsersCount = Meteor.users.find({
@@ -243,6 +243,8 @@ export class ServerRouter {
         });
 
         context.userId = userId;
+
+        return false; // continue request processing
       },
     });
 
@@ -265,7 +267,7 @@ export class ServerRouter {
       async route(name: string, ...rest) {
         const route: ?Route = getFieldValue(allRoutes, name);
         if (!route) {
-          return undefined;
+          return false;
         }
 
         return route.apply(this, rest);

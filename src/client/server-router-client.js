@@ -76,7 +76,7 @@ export class ServerRouterClient<R: Routes> {
    * Returns a promise so you catch any errors connected with the authentication itself.
    */
   async redirectTo(path: string): Promise<void> {
-    window.location.href = this.authenticatePath(path);
+    window.location.href = await this.authenticatePath(path);
   }
 
   /**
