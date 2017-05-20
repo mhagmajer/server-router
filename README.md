@@ -1,6 +1,9 @@
 # mhagmajer:server-router
 Server router with authentication for Meteor
 
+Introductory blog post:
+[https://blog.hagmajer.com/server-side-routing-with-authentication-in-meteor-6625ed832a94](https://blog.hagmajer.com/server-side-routing-with-authentication-in-meteor-6625ed832a94).
+
 Documentation: [https://mhagmajer.github.io/server-router/](https://mhagmajer.github.io/server-router/).
 
 # Installing
