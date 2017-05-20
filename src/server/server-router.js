@@ -30,7 +30,9 @@ import type { IncomingMessage, ServerResponse } from 'http';
  * serverRouter.addPath({
  *   path: '/binary-representation/:n',
  *   args: ({ n }) => [Number(n)],
- *   route: async n => n.toString(2),
+ *   async route(n) {
+ *     this.res.end(n.toString(2));
+ *   },
  * });
  * // GET /binary-representation/1337
  * // 10100111001
@@ -38,7 +40,9 @@ import type { IncomingMessage, ServerResponse } from 'http';
  * serverRouter.addPath({
  *   path: '/sum/:n+',
  *   args: ({ n }) => n.map(Number),
- *   route: async (...nums) => String(nums.reduce((a, b) => a + b)),
+ *   async route(...nums) {
+ *     this.res.end(String(nums.reduce((a, b) => a + b)));
+ *   },
  * });
  * // GET /sum/1/2/3
  * // 6
@@ -46,7 +50,9 @@ import type { IncomingMessage, ServerResponse } from 'http';
  * serverRouter.addPath({
  *   path: '/get-query',
  *   args: (params, query) => [query],
- *   route: async query => String(Object.keys(query)),
+ *   async route(query) {
+ *     this.res.end(String(Object.keys(query)));
+ *   },
  * });
  * // GET /get-query?a=&b=
  * // a,b
@@ -78,30 +84,21 @@ type ArgsMapper = (
 /**
  * Path handler called with `this` bound to {@link ServerRouterContext}.
  *
- * In order to respond to HTTP request, you should write to `this.res` object. Alternatively, you
- * can return:
- * - {@link null}: ends the response. Same as:
- * ```javascript
- *   // ...
- *   this.res.end();
- * }
- * ```
- * - {@link string} | {@link Buffer}: ends response with this data. Same as:
- * ```javascript
- *   // ...
- *   this.res.write(data);
- *   this.res.end();
- * }
- * ```
+ * In order to respond to HTTP request, you should write to `this.res` object. By default, request
+ * processing is finished once your handler finishes. If you want to disable this behavior, you can
+ * `return false` to pass the processing to the next handler. Note that the response (`this.res`)
+ * must eventually be ended during the HTTP request processing by a route within ServerRouter or
+ * some other middleware.
  *
- * If your route doesn't return anything (in other words returns `undefined`), processing is passed
- * on to the next route. Note that the response (`this.res`) must be eventually ended during
- * the HTTP request processing by a route within ServerRouter or some other middleware.
+ * Any exceptions thrown in handlers other than {@link AuthenticationRequiredError} are presented
+ * in response.
  *
- * @throws {AuthenticationRequiredError} if access to this route requires authentication. This will
+ * @returns {Promise<boolean | void>} whether the request processing is complete (defaults to true).
+ *
+ * @throws {AuthenticationRequiredError} if access to this route requires authentication. It will
  * cause this route to be called again with `this.userId` to be set to the current user (if any).
  */
-type Route = (...args: Array<any>) => Promise<void | null | string | Buffer>;
+type Route = (...args: Array<any>) => Promise<void | boolean>;
 
 /**
  * Object to which `this` is bound to inside your {@link Route} invocation. It provides the
@@ -131,7 +128,7 @@ export type ServerRouterContext = {|
  *   },
  *   images: {
  *     pngs: {
- *       logo() { ... }, // name: 'images.pngs.logo'
+ *       async logo() { ... }, // name: 'images.pngs.logo'
  *     },
  *   },
  * });
@@ -368,14 +365,8 @@ export class ServerRouter {
       return promise
         .then(() => path.route.apply(context, path.args(params, query)))
         .then((result) => {
-          if (result === undefined) {
+          if (result === false) {
             return;
-          }
-
-          if (result === null) {
-            res.end();
-          } else if (typeof result === 'string' || result instanceof Buffer) {
-            res.end(result);
           }
 
           throw responseReady;

@@ -1,7 +1,7 @@
 # mhagmajer:server-router
 Server router with authentication for Meteor
 
-Documentation: https://mhagmajer.github.io/server-router/.
+Documentation: [https://mhagmajer.github.io/server-router/](https://mhagmajer.github.io/server-router/).
 
 # Installing
 
@@ -19,8 +19,8 @@ import { ServerRouter } from 'meteor/mhagmajer:server-router';
 WebApp.connectHandlers.use(ServerRouter.middleware({
   paths: [],
   routes: {
-    hello() {
-      return `You are ${this.userId}`;
+    hello(name) {
+      this.res.end(`You ${name}, your id is ${this.userId}`);
     },
   },
 }));
@@ -38,10 +38,10 @@ const serverRouterClient = new ServerRouterClient({
 });
 
 <Button onClick={() => {
-  serverRouterClient.redirect.hello();  
+  serverRouterClient.redirect.hello('John');  
 }} />
 ```
 
-# Publishing (collaborators)
+# Publishing (contributors)
 
 Run `npm run clean` before `meteor publish`.

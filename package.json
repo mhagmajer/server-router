@@ -1,11 +1,12 @@
 {
   "private": true,
   "name": "server-router",
-  "version": "1.0.5",
+  "version": "1.1.0",
   "description": "Server router with authentication for Meteor",
   "scripts": {
     "clean": "rm -rf node_modules",
     "docs": "documentation build src/** --config documentation.yml -f html -o docs",
+    "serve-docs": "documentation serve src/** --config documentation.yml --watch",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Marcin Hagmajer",

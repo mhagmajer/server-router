@@ -39,7 +39,7 @@ export class ServerRouterClient<R: Routes> {
     this._routes = routes;
     this._defaultRoutePath = pathToRegexp.compile(defaultRoutePath);
 
-    this.url = this._createRouteHandlers();
+    this.path = this._createRouteHandlers();
     this.redirect = this._createRouteHandlers({
       redirect: true,
     });
@@ -53,7 +53,21 @@ export class ServerRouterClient<R: Routes> {
   }
 
   /**
-   * Redirects to given url with authentication. If you want to redirect to a publicly available
+   * Convenient methods for redirecting to a server route with authentication.
+   * @example
+   * serverRouterClient.redirect.privateImages.img1(800, 600);
+   */
+  redirect: R;
+
+  /**
+   * Convenient getters of paths for server routes. Compatible with static type checkers like Flow.
+   * @example
+   * console.log(serverRouterClient.path.privateImages.img1(800, 600));
+   */
+  path: R;
+
+  /**
+   * Redirects to given path with authentication. If you want to redirect to a publicly available
    * route, you can just do:
    * ```javascript
    * window.location.href = 'http://www.meteor.com/';
@@ -61,11 +75,31 @@ export class ServerRouterClient<R: Routes> {
    *
    * Returns a promise so you catch any errors connected with the authentication itself.
    */
-  async redirectTo(href: string): Promise<void> {
+  async redirectTo(path: string): Promise<void> {
+    window.location.href = this.authenticatePath(path);
+  }
+
+  /**
+   * Redirects to given route and args with authenication. Short for (example):
+   * ```javascript
+   * serverRouterClient.redirectTo(serverRouterClient.getRouteUrl('privateImages.img1', 800, 600));
+   * ```
+   *
+   * Returns a promise for the same reason like {@link #ServerRouterClient#redirectTo}.
+   */
+  async redirectToRoute(name: string, ...args: Array<any>) {
+    return this.redirectTo(this.getRoutePath(name, ...args));
+  }
+
+  /**
+   * Returns authenticated version of given path, or the path itself if no current user.
+   *
+   * Throws on authentication problems.
+   */
+  async authenticatePath(path: string): Promise<string> {
     const userId = Meteor.userId();
     if (!userId) {
-      window.location.href = href;
-      return;
+      return path;
     }
 
     const token = await new Promise((resolve, reject) => {
@@ -78,49 +112,22 @@ export class ServerRouterClient<R: Routes> {
       });
     });
 
-    const url = new Url(href);
+    const url = new Url(path);
     const query = queryString.parse(url.query);
     Object.assign(query, {
       _u: userId,
       _t: token,
     });
     url.set('query', queryString.stringify(query));
-
-    window.location.href = url.toString();
+    return url.toString();
   }
 
   /**
-   * Returns url for given route and args.
+   * Returns unauthenticated path for given route and args.
    */
-  getRouteUrl(name: string, ...args: Array<any>): string {
+  getRoutePath(name: string, ...args: Array<any>): string {
     return this._defaultRoutePath({ name, args: args.map(EJSON.stringify) });
   }
-
-  /**
-   * Redirects to given route and args with authenication. Short for (example):
-   * ```javascript
-   * serverRouterClient.redirectTo(serverRouterClient.getRouteUrl('privateImages.img1', 800, 600));
-   * ```
-   *
-   * Returns a promise for the same reason like {@link #ServerRouterClient#redirectTo}.
-   */
-  async redirectToRoute(name: string, ...args: Array<any>) {
-    return this.redirectTo(this.getRouteUrl(name, ...args));
-  }
-
-  /**
-   * Convenient getters of urls for server routes. Compatible with static type checkers like Flow.
-   * @example
-   * console.log(serverRouterClient.url.privateImages.img1(800, 600));
-   */
-  url: R;
-
-  /**
-   * Convenient methods for redirecting to a server route with authentication.
-   * @example
-   * serverRouterClient.redirect.privateImages.img1(800, 600);
-   */
-  redirect: R;
 
   _routes: R;
   _defaultRoutePath: () => string;
@@ -132,13 +139,13 @@ export class ServerRouterClient<R: Routes> {
 
     // non-object values are mapped to route calls
     const routes: any = mapValuesDeep(this._routes, (value, name) => (...args) => {
-      const url = this.getRouteUrl(name, args);
+      const path = this.getRoutePath(name, args);
 
       if (!redirect) {
-        return url;
+        return path;
       }
 
-      return this.redirectTo(url);
+      return this.redirectTo(path);
     });
     return routes;
   }
