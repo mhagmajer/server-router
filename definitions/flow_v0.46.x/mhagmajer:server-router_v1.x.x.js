@@ -18,7 +18,7 @@ declare module 'meteor/mhagmajer:server-router' {
     query: { [key: string]: string }
   ) => Array<any>;
 
-  declare type Route = (...args: Array<any>) => Promise<void | null | string | Buffer>;
+  declare type Route = (...args: Array<any>) => Promise<void | boolean>;
 
   declare type Routes = { [name: string]: Route | Routes }
 
