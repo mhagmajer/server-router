@@ -3,7 +3,7 @@
 
 Package.describe({
   name: 'mhagmajer:server-router',
-  version: '1.1.1',
+  version: '1.1.2',
   summary: 'Server router with authentication for Meteor',
   git: 'https://github.com/mhagmajer/server-router',
   documentation: 'README.md',

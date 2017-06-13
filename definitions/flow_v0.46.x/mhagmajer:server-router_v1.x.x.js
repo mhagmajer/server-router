@@ -28,17 +28,23 @@ declare module 'meteor/mhagmajer:server-router' {
     userId: ?string,
   };
 
+  declare type Middleware = (req: http$IncomingMessage, res: http$ServerResponse, next: (error?: any) => void) => void;
+
+  declare type ServerRouterOptions = {|
+    routes?: Routes,
+    defaultRoutePath?: string,
+    paths?: Array<Path>,
+  |};
+
   declare export class ServerRouter {
-    constructor(options?: {|
-      routes?: Routes,
-      defaultRoutePath?: string,
-      paths?: Array<Path>,
-    |}): this;
+    static middleware(options?: ServerRouterOptions): Middleware;
+
+    constructor(options?: ServerRouterOptions): this;
 
     addPath(data: Path): void;
     addPaths(data: Array<Path>): void;
     addRoutes(routes: Routes): void;
-    middleware: (req: http$IncomingMessage, res: http$ServerResponse, next: (error?: any) => void) => void;
+    middleware: Middleware;
   }
 
   declare export class AuthenticationRequiredError {

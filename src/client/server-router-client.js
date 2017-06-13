@@ -139,7 +139,7 @@ export class ServerRouterClient<R: Routes> {
 
     // non-object values are mapped to route calls
     const routes: any = mapValuesDeep(this._routes, (value, name) => (...args) => {
-      const path = this.getRoutePath(name, args);
+      const path = this.getRoutePath(name, ...args);
 
       if (!redirect) {
         return path;
