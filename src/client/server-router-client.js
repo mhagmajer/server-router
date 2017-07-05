@@ -61,6 +61,8 @@ export class ServerRouterClient<R: Routes> {
 
   /**
    * Convenient getters of paths for server routes. Compatible with static type checkers like Flow.
+   *
+   * Note: These methods return string, not Promise.
    * @example
    * console.log(serverRouterClient.path.privateImages.img1(800, 600));
    */
@@ -82,7 +84,7 @@ export class ServerRouterClient<R: Routes> {
   /**
    * Redirects to given route and args with authenication. Short for (example):
    * ```javascript
-   * serverRouterClient.redirectTo(serverRouterClient.getRouteUrl('privateImages.img1', 800, 600));
+   * serverRouterClient.redirectTo(serverRouterClient.getRoutePath('privateImages.img1', 800, 600));
    * ```
    *
    * Returns a promise for the same reason like {@link #ServerRouterClient#redirectTo}.

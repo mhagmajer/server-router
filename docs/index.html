@@ -1463,6 +1463,7 @@ substitute function with anything other than object. For example:
   
 
   <p>Convenient getters of paths for server routes. Compatible with static type checkers like Flow.</p>
+<p>Note: These methods return string, not Promise.</p>
 
 
   <div class='pre p1 fill-light mt0'>path</div>
@@ -1587,7 +1588,7 @@ route, you can just do:</p>
   
 
   <p>Redirects to given route and args with authenication. Short for (example):</p>
-<pre class='hljs'>serverRouterClient.redirectTo(serverRouterClient.getRouteUrl(<span class="hljs-string">'privateImages.img1'</span>, <span class="hljs-number">800</span>, <span class="hljs-number">600</span>));</pre>
+<pre class='hljs'>serverRouterClient.redirectTo(serverRouterClient.getRoutePath(<span class="hljs-string">'privateImages.img1'</span>, <span class="hljs-number">800</span>, <span class="hljs-number">600</span>));</pre>
 <p>Returns a promise for the same reason like <a href="#ServerRouterClient#redirectTo">#ServerRouterClient#redirectTo</a>.</p>
 
 
