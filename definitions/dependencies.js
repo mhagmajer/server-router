@@ -18,6 +18,10 @@ declare module 'meteor/tinytest' {
   declare module.exports: any;
 }
 
+declare module 'meteor/webapp' {
+  declare module.exports: any;
+}
+
 declare module 'path-to-regexp' {
   declare module.exports: any;
 }
@@ -33,4 +37,3 @@ declare module 'url-parse' {
 declare var _: Object;
 declare var Npm: Object;
 declare var Package: Object;
-declare var WebAppInternals: Object;

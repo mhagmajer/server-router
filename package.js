@@ -3,7 +3,7 @@
 
 Package.describe({
   name: 'mhagmajer:server-router',
-  version: '1.2.1',
+  version: '1.2.2',
   summary: 'Server router with authentication for Meteor',
   git: 'https://github.com/mhagmajer/server-router',
   documentation: 'README.md',
@@ -24,6 +24,7 @@ Package.onUse((api) => {
     'ecmascript',
     'modules',
     'accounts-base',
+    'webapp',
   ]);
   api.mainModule('src/server/server-router.js', 'server');
   api.mainModule('src/client/server-router-client.js', 'client');

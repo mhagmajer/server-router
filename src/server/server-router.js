@@ -4,6 +4,7 @@
 import { EJSON } from 'meteor/ejson';
 import { Meteor } from 'meteor/meteor';
 import { Random } from 'meteor/random';
+import { WebAppInternals } from 'meteor/webapp';
 import invariant from 'invariant';
 import pathToRegexp from 'path-to-regexp';
 import url from 'url';
