@@ -376,10 +376,7 @@ export class ServerRouter {
         });
     }, Promise.resolve()).then(next, (reason) => {
       if (reason instanceof AuthenticationRequiredError) {
-        WebAppInternals.registerBoilerplateDataCallback('mhagmajer:server-router', (_req, data) => {
-          // eslint-disable-next-line no-param-reassign
-          data.head += '<meta data-server-router-authentication-required="1">';
-        });
+        markRequestForRedirect(req);
         next();
         return;
       }
@@ -397,6 +394,22 @@ function getFieldValue(obj: ?Object, field: string): ?Object {
   }
   return field.split('.').reduce((o, part) => o && o[part], obj);
 }
+
+const redirectedRequests = new Set();
+
+function markRequestForRedirect(req) {
+  redirectedRequests.add(req);
+}
+
+WebAppInternals.registerBoilerplateDataCallback('mhagmajer:server-router', (req, data) => {
+  if (!redirectedRequests.delete(req)) {
+    return false; // no changes made
+  }
+
+  // eslint-disable-next-line no-param-reassign
+  data.head += '<meta data-server-router-authentication-required="1">';
+  return true;
+});
 
 Meteor.methods({
   _ServerRouterGetUserToken() {
