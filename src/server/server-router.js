@@ -399,11 +399,11 @@ function getFieldValue(obj: ?Object, field: string): ?Object {
 const redirectedRequests = new Set();
 
 function markRequestForRedirect(req) {
-  redirectedRequests.add(req);
+  redirectedRequests.add(req.headers);
 }
 
 WebAppInternals.registerBoilerplateDataCallback('mhagmajer:server-router', (req, data) => {
-  if (!redirectedRequests.delete(req)) {
+  if (!redirectedRequests.delete(req.headers)) {
     return false; // no changes made
   }
 
