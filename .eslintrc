@@ -14,4 +14,3 @@
   globals:
     _: false
     $PropertyType: false
-    InjectData: false

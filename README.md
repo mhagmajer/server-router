@@ -6,6 +6,12 @@ Introductory blog post:
 
 Documentation: [https://mhagmajer.github.io/server-router/](https://mhagmajer.github.io/server-router/).
 
+# Compatibility
+
+Please beware that:
+* versions 1.2.x and above require Meteor 1.6.1+
+* versions 1.1.x and below require Meteor 1.4.4.2-1.6
+
 # Installing
 
 `meteor add mhagmajer:server-router`

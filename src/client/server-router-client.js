@@ -1,5 +1,5 @@
 /* @flow */
-/* globals window: false */
+/* globals document: false, window: false */
 
 import { EJSON } from 'meteor/ejson';
 import { Meteor } from 'meteor/meteor';
@@ -44,12 +44,12 @@ export class ServerRouterClient<R: Routes> {
       redirect: true,
     });
 
-    InjectData.getData('_ServerRouterAuthenticationRequired', (shouldRefresh) => {
-      if (!shouldRefresh || !Meteor.userId()) {
-        return;
-      }
-      this.redirectTo(window.location.href);
-    });
+    const shouldRefresh = Array.from(document.getElementsByTagName('meta'))
+      .some(el => el.getAttribute('data-server-router-authentication-required'));
+    if (!shouldRefresh || !Meteor.userId()) {
+      return;
+    }
+    this.redirectTo(window.location.href);
   }
 
   /**

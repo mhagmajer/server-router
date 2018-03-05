@@ -31,6 +31,6 @@ declare module 'url-parse' {
 }
 
 declare var _: Object;
-declare var InjectData: Object;
 declare var Npm: Object;
 declare var Package: Object;
+declare var WebAppInternals: Object;

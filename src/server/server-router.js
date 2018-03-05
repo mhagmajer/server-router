@@ -1,4 +1,5 @@
 /* @flow */
+/* globals WebAppInternals: false */
 
 import { EJSON } from 'meteor/ejson';
 import { Meteor } from 'meteor/meteor';
@@ -375,7 +376,10 @@ export class ServerRouter {
         });
     }, Promise.resolve()).then(next, (reason) => {
       if (reason instanceof AuthenticationRequiredError) {
-        InjectData.pushData(context.res, '_ServerRouterAuthenticationRequired', true);
+        WebAppInternals.registerBoilerplateDataCallback('mhagmajer:server-router', (_req, data) => {
+          // eslint-disable-next-line no-param-reassign
+          data.head += '<meta data-server-router-authentication-required="1">';
+        });
         next();
         return;
       }
