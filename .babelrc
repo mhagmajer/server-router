@@ -1,0 +1,6 @@
+{
+  "plugins": [
+    "syntax-flow",
+    "transform-flow-strip-types"
+  ]
+}

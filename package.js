@@ -3,7 +3,7 @@
 
 Package.describe({
   name: 'mhagmajer:server-router',
-  version: '1.2.3',
+  version: '1.2.5',
   summary: 'Server router with authentication for Meteor',
   git: 'https://github.com/mhagmajer/server-router',
   documentation: 'README.md',
@@ -14,10 +14,12 @@ Npm.depends({
   'query-string': '4.3.4',
   'url-parse': '1.1.9',
   invariant: '2.2.2',
+  'babel-plugin-syntax-flow': '6.18.0',
+  'babel-plugin-transform-flow-strip-types': '6.22.0',
 });
 
 Package.onUse((api) => {
-  api.versionsFrom('1.6.1');
+  api.versionsFrom('1.11');
   api.use([
     'underscore',
     'ejson',
