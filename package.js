@@ -19,7 +19,7 @@ Npm.depends({
 });
 
 Package.onUse((api) => {
-  api.versionsFrom('1.11');
+  api.versionsFrom(['1.11', '2.3']);
   api.use([
     'underscore',
     'ejson',
